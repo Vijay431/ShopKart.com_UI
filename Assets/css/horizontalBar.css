@@ -1,0 +1,26 @@
+.navbar{
+  margin-top: 3.5%;
+}
+
+.unorderedItems{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
+
+.unorderedItems li:hover{
+  background-color: white;
+  color: black;
+  font-weight: bold;
+}
+
+.listedItem{
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 18px;
+  text-decoration: none;
+}

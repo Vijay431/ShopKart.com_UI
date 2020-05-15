@@ -4,13 +4,13 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './main.js',
-    output: { 
-        path: __dirname, 
-        filename: './scripts/bundle.js' 
+    output: {
+        path: __dirname,
+        filename: './scripts/bundle.js'
     },
     devServer: {
         inline: true,
-        port: 8080
+        port: 7000
     },
     module: {
         rules: [
@@ -38,8 +38,12 @@ module.exports = {
                 }
             },
             {
-                test: /\.(jpe?g|png|gif|svg)$/i, 
+                test: /\.(jpe?g|png|gif|svg)$/i,
                 loader: "file-loader?name=/Assets/images/[name].[ext]"
+            },
+            {
+              test: /\.json$/i,
+              loader: 'raw-loader'
             }
         ]
     },
