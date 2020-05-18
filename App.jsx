@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 
 //Custom Pages .jsx
 import LandingPage from './Components/Others/landingPage.jsx';
@@ -16,16 +16,16 @@ class App extends Component{
 
    render(){
       return(
-         <React.Fragment>
-            <Router>
-                  <Route path="/" exact={true} component={LandingPage} />
-                  <Route path="/login" component={Login} />
-                  <Route path="/register" component={Register} />
-                  <Route path="/cart" component={Cart} />
-                  <Route path="/shipping" component={Shipping} />
-                  <Route path="/productForm" component={ProductForm} />
-            </Router>
-         </React.Fragment>
+         <div>
+            <Switch>
+               <Route path="/" exact={true} component={LandingPage} />
+               <Route path="/login" component={Login} />
+               <Route path="/register" component={Register} />
+               <Route path="/cart" component={Cart} />
+               <Route path="/shipping" component={Shipping} />
+               <Route path="/productForm" component={ProductForm} />
+            </Switch>
+         </div>
       );
    }
 }

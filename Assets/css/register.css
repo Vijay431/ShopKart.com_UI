@@ -1,0 +1,15 @@
+.Card{
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+}
+
+.Card input{
+    width: 100%;
+}
+
+.Button{
+    margin-left: 20%;
+    margin-right: 20%;
+}

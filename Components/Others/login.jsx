@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Styles from '../../Assets/css/login.css';
 
@@ -16,6 +17,7 @@ class Login extends React.Component{
     }
 
     loginComponent(){
+        console.log("logged in");
     }
 
     render(){
@@ -43,7 +45,7 @@ class Login extends React.Component{
                     </div>
                     <div className="card-footer" >
                         <div className={Styles.Footer} >
-                            <a id="hreflink" href="/register" >Are you a new visitor?.click here!</a>
+                            <Link to="/register" >Are you a new visitor?.click here!</Link>
                         </div>
                     </div>
                 </div>
