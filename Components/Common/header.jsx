@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import Styles from '../../Assets/css/header.css';
 
 const Header = (props) => {
   const history = useHistory();
@@ -9,7 +8,7 @@ const Header = (props) => {
 
   const toLogin = () => {
     setloggedIn(true);
-    // history.push('/login');
+    history.push('/login');
   }
 
   const toRegister = () => {
