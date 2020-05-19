@@ -5,11 +5,18 @@
     margin-top: 10%;
 }
 
+.Card h3{
+  text-align: center;
+  font-size: 24px;
+  background-color: #0275d8;
+  color: white;
+}
+
 .Card input{
     width: 100%;
 }
 
 .Button{
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 13.5%;
+    margin-right: 13.5%;
 }

@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const Header = (props) => {
   const history = useHistory();
-  const [loggedIn, setloggedIn] = useState();
-  const [goBack, setgoBack] = useState();
+  const [loggedIn, setloggedIn] = useState(true);
+  const [loggedOut, setloggedOut] = useState();
 
   const toLogin = () => {
-    setloggedIn(true);
     history.push('/login');
   }
 
@@ -20,15 +19,14 @@ const Header = (props) => {
   }
 
   const toLogout = () => {
-    setloggedIn(false);
   }
 
   return(
       <nav className="navbar fixed-top navbar-dark bg-primary">
-        <a className="navbar-brand" href="/">
+        <Link to="/" className="navbar-brand">
             <i className="fa fa-shopping-bag" aria-hidden="true"></i> ShopKart.com
-        </a>
-        { !loggedIn ? <div className="btn-group" role="toolbar" >
+        </Link>
+        { loggedIn ? <div className="btn-group" role="toolbar" >
           <div>
             <button type="button" className="btn btn-success" onClick={toLogin} >
               Login <i className="fa fa-sign-in" aria-hidden="true"></i>
@@ -39,7 +37,9 @@ const Header = (props) => {
               Signup <i className="fa fa-chevron-right" aria-hidden="true"></i>
             </button>
           </div>
-        </div> : <div className="btn-group" role="toolbar" aria-label="Basic example" >
+        </div> : null }
+
+        { loggedOut ? <div className="btn-group" role="toolbar" aria-label="Basic example" >
           <div>
             <button type="button" className="btn btn-warning" onClick={toCart} >
               Cart <i className="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -50,7 +50,7 @@ const Header = (props) => {
               Logout <i className="fa fa-sign-out" aria-hidden="true"></i>
             </button>
           </div>
-        </div> }
+        </div> : null }
       </nav>
   )
 }

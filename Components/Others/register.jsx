@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Styles from '../../Assets/css/register.css';
+import Header from '../Common/header.jsx';
 
 class Register extends React.Component{
     constructor(props){
@@ -18,11 +20,13 @@ class Register extends React.Component{
     }
 
     registerComponent(){
-        console.log("Registering");
+        this.props.history.push('/login');
     }
 
     render(){
         return(
+          <div>
+            <Header />
             <div className={Styles.Card} >
                 <div className="card">
                     <h3 className="card-header" >Register</h3>
@@ -45,11 +49,12 @@ class Register extends React.Component{
                             <button className="btn btn-success" onClick={this.registerComponent} >Submit</button>
                         </div>
                         <div className={Styles.Button} >
-                            <a href="/login" ><button className="btn btn-danger" >Cancel</button></a>
+                            <Link to="/login" ><button className="btn btn-danger" >Cancel</button></Link>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         )
     }
 }
