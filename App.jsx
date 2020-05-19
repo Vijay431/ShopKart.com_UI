@@ -8,6 +8,7 @@ import Register from './Components/Others/register.jsx';
 import Cart from './Components/Others/cart.jsx';
 import Shipping from './Components/Others/shipping.jsx';
 import ProductForm from './Components/Others/productForm.jsx';
+import NotFound from './Components/Common/notFound.jsx';
 
 class App extends Component{
    constructor(props){
@@ -23,7 +24,8 @@ class App extends Component{
                <Route path="/register" component={Register} />
                <Route path="/cart" component={Cart} />
                <Route path="/shipping" component={Shipping} />
-               <Route path="/productForm" component={ProductForm} />
+               <Route path="/productform" component={ProductForm} />
+               <Route path="**" component={NotFound} />
             </Switch>
          </div>
       );
@@ -31,5 +33,3 @@ class App extends Component{
 }
 
 export default App;
-
-

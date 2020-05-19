@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
 const Header = (props) => {
   const history = useHistory();
   const [loggedIn, setloggedIn] = useState(true);
   const [loggedOut, setloggedOut] = useState();
+
+  useEffect(() => {
+    setloggedIn(props.loggedIn);
+    setloggedOut(props.loggedOut);
+  }, [])
 
   const toLogin = () => {
     history.push('/login');

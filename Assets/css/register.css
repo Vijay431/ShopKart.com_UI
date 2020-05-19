@@ -16,7 +16,12 @@
     width: 100%;
 }
 
+.Required{
+  color: red;
+}
+
 .Button{
     margin-left: 13.5%;
     margin-right: 13.5%;
+    margin-bottom: 10px;
 }

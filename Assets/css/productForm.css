@@ -1,0 +1,28 @@
+.Card{
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 7.5%;
+}
+
+.Card h3{
+  text-align: center;
+  font-size: 24px;
+  background-color: #0275d8;
+  color: white;
+}
+
+.Card input{
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.Required{
+  color: red;
+}
+
+.Button{
+  margin-left: 40%;
+  margin-right: 40%;
+}

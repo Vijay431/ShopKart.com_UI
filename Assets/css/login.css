@@ -11,6 +11,10 @@
     margin-bottom: 5px;
 }
 
+.Required{
+  color: red;
+}
+
 .Card h3{
     background-color: #0275d8;
     color: white;
