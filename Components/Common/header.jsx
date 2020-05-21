@@ -9,7 +9,7 @@ const Header = (props) => {
   useEffect(() => {
     setloggedIn(props.loggedIn);
     setloggedOut(props.loggedOut);
-  }, [])
+  }, [props.loggedin, props.loggedOut])
 
   const toLogin = () => {
     history.push('/login');
@@ -24,6 +24,8 @@ const Header = (props) => {
   }
 
   const toLogout = () => {
+    history.push({state: true});
+    window.location.reload(true);
   }
 
   return(

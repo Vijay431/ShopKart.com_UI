@@ -8,17 +8,22 @@ const products = JSONproducts.products;
 import Items from '../../Assets/JSON/navProducts.js';
 const NavItems = Items.navitems;
 import ProductForm from './productForm.jsx';
+import Cart from './cart.jsx';
 
 class LandingPage extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       user: 'admin',
-      NavItems: Items.navitems
+      NavItems: Items.navitems,
+      Items: products,
+      loggedin: true,
+      loggedout: false
     }
   }
 
   componentDidMount(){
+    this.setState({loggedin: this.props.location.state, loggedout: !this.props.location.state});
     if(this.state.user === 'admin'){
       Items.navitems[0].show = true;
       this.setState({NavItems: Items.navitems})
@@ -39,23 +44,31 @@ class LandingPage extends React.Component{
   itemDetail(name){
     console.log("clicked " + name);
     if(name === 'Add'){
-      this.props.history.push('/productform')
+      this.props.history.push('/productform');
     }
   }
 
-  addToCart(){
-    console.log("adding to cart");
+  addToCart(item, index){
+    if(products[index].quantity >= 0){
+      products[index].quantity = products[index].quantity + 1;
+      this.setState({Items: products});
+      productArr = this.state.Items;
+    }
   }
 
-  removeFromCart(){
-    console.log("removing from cart");
+  removeFromCart(item, index){
+    if(products[index].quantity > 0){
+      products[index].quantity = products[index].quantity - 1;
+      this.setState({Items: products});
+      productArr = this.state.Items;
+    }
   }
 
   render(){
-    const {user, NavItems} = this.state;
+    const {user, NavItems, Items, loggedin, loggedout, cartFlag} = this.state;
     return(
       <div>
-        <Header loggedIn={true} loggedOut={false} />
+        <Header loggedIn={loggedin} loggedOut={loggedout} />
         <div className={Styles.navbar} >
           <ul className={Styles.unorderedItems} >
             {
@@ -70,7 +83,7 @@ class LandingPage extends React.Component{
           <div className={Styles.ProductOuterDiv} >
             <div className="card-deck">
               {
-                products.map((item, index) => {
+                Items.map((item, index) => {
                   return <div key={index} className="col-sm-3" >
                     <div className="card" >
                       <img className="card-img-top" height="200" width="150" src={item.image} alt={item.name}/>
@@ -85,13 +98,13 @@ class LandingPage extends React.Component{
                             </button>
                           </div> : null
                         }
-                        {
-                          !item.addToCart ? <div className={Styles.ActionButton} >
-                            <button className="btn btn-success" onClick={() => this.addToCart()} ><i className="fa fa-plus" aria-hidden="true"></i> Add to Cart</button>
-                          </div> : <div className={Styles.ActionButton} >
-                            <button className="btn btn-danger"  onClick={() => this.removeFromCart()} ><i className="fa fa-trash" aria-hidden="true"></i> Delete from Cart</button>
+                        <div className={Styles.ButtonGroup} >
+                          <div className="btn btn-group" >
+                            <button className="btn btn-success" onClick={() => this.addToCart(item, index)} ><i className="fa fa-plus" aria-hidden="true"></i></button>
+                            <button className="btn btn-warn" disabled={true} >{item.quantity}</button>
+                            <button className="btn btn-danger" onClick={() => this.removeFromCart(item, index)} ><i className="fa fa-minus" aria-hidden="true"></i></button>
                           </div>
-                        }
+                        </div>
                       </div>
                       <div className="card-footer">
                         <small className="text-muted">{item.id}</small>

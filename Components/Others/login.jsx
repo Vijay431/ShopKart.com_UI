@@ -21,7 +21,10 @@ class Login extends React.Component{
   loginComponent(){
     const {username, password} = this.state;
     if(username !== "" && password !== ""){
-      this.props.history.push('/');
+      this.props.history.push({
+        pathname: '/',
+        state: false
+      });
     }
     else{
       //alert component

@@ -14,15 +14,16 @@ class ProductForm extends React.Component{
       productCategory: '',
       productImage: '',
       productPrice: '',
-      whichButton: true
+      whichButton: true,
+      imageButton: true
     }
     this.addProduct = this.addProduct.bind(this);
     this.updateProduct = this.updateProduct.bind(this);
   }
 
   componentDidMount(){
-    if(Object.keys(this.props.location.state).length != 0){
-      let item = this.props.location.state;
+    let item = this.props.location.state;
+    if(Object.keys(item).length != 0 && item != undefined && item != null){
       this.setState({
         productName: item.name,
         productID: item.id,
@@ -30,8 +31,12 @@ class ProductForm extends React.Component{
         productCategory: item.category,
         productPrice: item.price,
         productImage: item.image,
-        whichButton: false
+        whichButton: false,
+        imageButton: false
       })
+    }
+    else{
+      console.log("error");
     }
   }
 
@@ -95,11 +100,15 @@ class ProductForm extends React.Component{
                 <input type="text" name="productPrice" id="productPrice" value={productPrice} onChange={() => this.formValidator(event)} required />
               </div>
               <div className="card-text" >
-                { 
-                  this.state.whichButton ? <div>
+                {
+                  this.state.imageButton ? <div>
                     <label htmlFor="productImage" >Product Image</label>
                     <input type="file" name="productImage" id="productImage" value={productImage} onChange={() => this.fileValidator(event)} />
-                  </div> : <img src={productImage} height="150" width="150" />
+                  </div> :<div className={Styles.Image} >
+                    <label htmlFor="productImage" >Product Image</label>
+                    <i className="fa fa-times" onClick={() => this.setState({imageButton: true, productImage: ''})}  aria-hidden="true"></i>
+                    <img src={productImage} id="productImage" height="200" width="250" />
+                  </div>
                 }
               </div>
               <div className="btn btn-group" role="toolbar">

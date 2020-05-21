@@ -18,6 +18,19 @@
   margin-bottom: 5px;
 }
 
+.Image img{
+  margin-left: 20%;
+}
+
+.Image{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.Image i{
+    float: right;
+}
+
 .Required{
   color: red;
 }

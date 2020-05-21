@@ -29,12 +29,10 @@
   margin: 5px;
 }
 
-.ActionButton{
-  margin-top: 5px;
-  margin-bottom: 5px;
+.ActionButton button{
   width: 100%;
 }
 
-.ActionButton button{
-  width: 100%;
+.ButtonGroup{
+  float: right;
 }

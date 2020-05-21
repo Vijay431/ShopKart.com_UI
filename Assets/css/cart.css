@@ -1,0 +1,44 @@
+.CartOuterDiv{
+  margin-top: 4%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.Details{
+  padding: 10px;
+}
+
+.Footer{
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.Checkout{
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2%;
+  text-align: justify;
+  text-align-last: center;
+}
+
+.Checkout hr{
+  border: 2px solid black;
+}
+
+.Button{
+  float: left;
+  margin-left: 17.5%;
+  margin-right: 17.5%;
+}
+
+.Text{
+  float: left;
+  margin-left: 17.5%;
+  margin-right: 17.5%;
+}
