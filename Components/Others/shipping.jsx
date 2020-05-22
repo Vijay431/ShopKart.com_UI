@@ -60,7 +60,7 @@ class Shipping extends React.Component{
               </div>
               <div className="input-group mb-3">
                 <div className="input-group-prepend">
-                  <span className="input-group-text" id="alternate"><i className="fa fa-phone" aria-hidden="true"></i></span>
+                  <span className="input-group-text" id="alternate"><i class="fa fa-mobile" aria-hidden="true"></i></span>
                 </div>
                 <input type="text" className="form-control" placeholder="Alternate Contact Number" value={alternate} onClick={() => this.formValidator(event)} aria-label="alternate" aria-describedby="alternate" required/>
               </div>

@@ -2,7 +2,7 @@
   width: 30%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 7.5%;
+  margin-top: 5%;
 }
 
 .Card h3{
@@ -10,12 +10,7 @@
   font-size: 24px;
   background-color: #0275d8;
   color: white;
-}
-
-.Card input{
-  width: 100%;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  font-family: cursive;
 }
 
 .Image img{
@@ -36,6 +31,12 @@
 }
 
 .Button{
-  margin-left: 40%;
-  margin-right: 40%;
+  width: 100%;
+  margin-top: -15px;
+  margin-bottom: 5px;
+}
+
+.Button button{
+  margin-left: 20%;
+  margin-right: 20%;
 }

@@ -1,0 +1,10 @@
+.Header{
+  font-size: 20px;
+  font-family: cursive;
+}
+
+.Button button{
+  font-family: cursive;
+  margin-left: 5px;
+  margin-right: 5px;
+}

@@ -35,6 +35,7 @@ class Register extends React.Component{
   }
 
   render(){
+    const {username, password, repassword} = this.state;
     return(
       <div>
         <Header loggedIn={false} loggedOut={false} />
@@ -42,17 +43,23 @@ class Register extends React.Component{
           <div className="card">
             <h3 className="card-header" >Register</h3>
             <div className="card-body" >
-              <div className="card-text">
-                <label htmlFor="username" >Username</label><span className={Styles.Required} >*</span>
-                <input type="text" name="username" id="username" value={this.state.username} onChange={() => this.formValidator(event)} />
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="username"><i className="fa fa-user" aria-hidden="true"></i></span>
+                </div>
+                <input type="text" className="form-control" name="username" placeholder="Username" aria-label="username" value={username} onChange={() => this.formValidator(event)} required aria-describedby="username" />
               </div>
-              <div className="card-text">
-                <label htmlFor="password" >Password</label><span className={Styles.Required} >*</span>
-                <input type="password" name="password" id="password" value={this.state.password} onChange={() => this.formValidator(event)} />
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="password"><i className="fa fa-key" aria-hidden="true"></i></span>
+                </div>
+                <input type="password" className="form-control" name="password" placeholder="Password" aria-label="password" value={password} onChange={() => this.formValidator(event)} required aria-describedby="password" />
               </div>
-              <div className="card-text">
-                <label htmlFor="repassword" >Retype-Password</label><span className={Styles.Required} >*</span>
-                <input type="password" name="repassword" id="repassword" value={this.state.repassword} onChange={() => this.formValidator(event)} />
+              <div className="input-group mb-3">
+                <div className="input-group-prepend">
+                  <span className="input-group-text" id="repassword"><i className="fa fa-key" aria-hidden="true"></i></span>
+                </div>
+                <input type="password" className="form-control" name="repassword" placeholder="Retype-Password" aria-label="repassword" value={repassword} onChange={() => this.formValidator(event)} required aria-describedby="repassword" />
               </div>
             </div>
             <div className="btn btn-group" >
