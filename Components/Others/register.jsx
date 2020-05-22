@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import Styles from '../../Assets/css/register.css';
 import Header from '../Common/header.jsx';
+import Error from '../Common/error.jsx';
+import Alert from '../Common/alert.jsx';
 
 class Register extends React.Component{
   constructor(props){
@@ -10,7 +12,11 @@ class Register extends React.Component{
     this.state = {
         username: '',
         password: '',
-        repassword: ''
+        repassword: '',
+        errorFlag: false,
+        alertFlag: false,
+        message: '',
+        title: ''
     }
     this.registerComponent = this.registerComponent.bind(this);
   }
@@ -20,22 +26,30 @@ class Register extends React.Component{
   }
 
   registerComponent(){
-    const {username, password, repassword} = this.state;
+    const {username, password, repassword, errorFlag, alertFlag, title, message} = this.state;
     if(username !== "" && password !== "" && repassword !== ""){
       if(password === repassword){
         this.props.history.push('/login');
       }
       else{
-        // alert Component
+        this.setState({
+          errorFlag: true,
+          title: "Failure",
+          message: "Passwords aren't matching!"
+        })
       }
     }
     else {
-      // alert Component
+      this.setState({
+        errorFlag: true,
+        title: "Failure",
+        message: "All fields are mandatory. Kindly fill the empty fields"
+      })
     }
   }
 
   render(){
-    const {username, password, repassword} = this.state;
+    const {username, password, repassword, errorFlag, alertFlag, title, message} = this.state;
     return(
       <div>
         <Header loggedIn={false} loggedOut={false} />
@@ -72,6 +86,8 @@ class Register extends React.Component{
             </div>
           </div>
         </div>
+        <Alert alertFlag={alertFlag} title={title} message={message} close={() => this.setState({alertFlag: false})} />
+        <Error errorFlag={errorFlag} title={title} message={message} close={() => this.setState({errorFlag: false})} />
       </div>
     )
   }
