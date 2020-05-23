@@ -29,7 +29,11 @@ class Register extends React.Component{
     const {username, password, repassword, errorFlag, alertFlag, title, message} = this.state;
     if(username !== "" && password !== "" && repassword !== ""){
       if(password === repassword){
-        this.props.history.push('/login');
+        this.setState({
+          alertFlag: true,
+          title: "Success",
+          message: "Redirecting to Login Page"
+        })
       }
       else{
         this.setState({
@@ -86,7 +90,7 @@ class Register extends React.Component{
             </div>
           </div>
         </div>
-        <Alert alertFlag={alertFlag} title={title} message={message} close={() => this.setState({alertFlag: false})} />
+        <Alert alertFlag={alertFlag} title={title} message={message} close={() => this.props.history.push('/login')} />
         <Error errorFlag={errorFlag} title={title} message={message} close={() => this.setState({errorFlag: false})} />
       </div>
     )

@@ -17,6 +17,7 @@ const Error = (props) => {
           <div className={Styles.Body} >
             <i className="fa fa-info-circle" aria-hidden="true"></i> {props.message}
           </div>
+          <hr/>
           <div className={Styles.ActionButton} >
             <button className="btn btn-info" onClick={() => props.close()} >Close</button>
           </div>

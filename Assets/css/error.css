@@ -24,13 +24,8 @@
   transition: all 0.3s ease-out;
 }
 
-.Modal hr{
-  border-width: thick;
-}
-
 .Success{
-  background-color: green;
-  color: white;
+  color: green;
   font-size: 20px;
   font-family: cursive;
   font-weight: bold;
@@ -39,8 +34,7 @@
 }
 
 .Failure{
-  background-color: red;
-  color: white;
+  color: red;
   font-size: 20px;
   font-family: cursive;
   font-weight: bold;
@@ -49,6 +43,7 @@
 }
 
 .Close{
+  color: black;
   float: right;
   padding-left: 5px;
   padding-right: 5px;
