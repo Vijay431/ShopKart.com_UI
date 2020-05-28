@@ -8,6 +8,7 @@ import Register from './Components/Others/register.jsx';
 import Cart from './Components/Others/cart.jsx';
 import Shipping from './Components/Others/shipping.jsx';
 import ProductForm from './Components/Others/productForm.jsx';
+import CheckoutForm from './Components/Others/checkoutform.jsx';
 import NotFound from './Components/Common/notFound.jsx';
 
 class App extends Component{
@@ -32,6 +33,7 @@ class App extends Component{
      <Route path="/register" component={Register} />
      <Route path="/cart" component={Cart} />
      <Route path="/shipping" component={Shipping} />
+     <Route path="/checkoutform" component={CheckoutForm} />
      { admin === 'Y' ? <Route path="/productform" component={ProductForm} /> : null }
      <Route path="**" component={NotFound} />
     </Switch>

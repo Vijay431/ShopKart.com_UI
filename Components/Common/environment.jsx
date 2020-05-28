@@ -7,6 +7,8 @@ export default{
     "updateProducts": "http://localhost:7100/products/update",
     "addToCart": "http://localhost:7100/cart/add",
     "getCart": "http://localhost:7100/cart/get",
-    "checkout": "http://localhost:7100/cart/checkout"
+    "checkoutform": "http://localhost:7100/shipping/checkoutform",
+    "addForShipping": "http://localhost:7100/shipping/add",
+    "shippingProducts": "http://localhost:7100/shipping/get"
   }
 }

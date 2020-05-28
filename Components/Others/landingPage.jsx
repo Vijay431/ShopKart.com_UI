@@ -13,6 +13,14 @@ import Alert from '../Common/alert.jsx';
 import Error from '../Common/error.jsx';
 
 var products = [];
+var token = "";
+var itemsArr = {
+  Accessories: [],
+  Books: [],
+  Furniture: [],
+  Clothes: [],
+  Shoes: []
+}
 
 class LandingPage extends React.Component{
   constructor(props){
@@ -32,10 +40,15 @@ class LandingPage extends React.Component{
   }
 
   componentDidMount(){
-    this.getProducts('All');
-    let token = window.sessionStorage.getItem('Auth-token');
+    this.getProducts('Accessories');
+    token = window.sessionStorage.getItem('Auth-token');
     if(token){
       this.setState({loggedin: false, loggedout: true});
+      this.setState({
+        errorFlag: true,
+        title: "Alert!",
+        message: "The adding products will be saved automatically"
+      })
     }
     if(this.state.admin === 'Y'){
       Items.navitems[0].show = true;
@@ -57,11 +70,18 @@ class LandingPage extends React.Component{
       }
       else{
         this.setState({
-          alertFlag: true,
+          errorFlag: true,
           title: 'Failure',
-          message: 'Try again! After sometime'
+          message: 'Please try again after sometime!'
         })
       }
+    })
+    .catch(err => {
+      this.setState({
+        errorFlag: true,
+        title: "Failure",
+        message: "Uh-Oh! Something went Wrong!"
+      })
     })
   }
 
@@ -90,10 +110,79 @@ class LandingPage extends React.Component{
     }
   }
 
+  bodyForCart(products){
+    let product = products.filter((product) => {
+      return product.quantity >= 1
+    });
+    if(product[0].productCategory === 'Accessories'){
+      itemsArr.Accessories = [];
+      for(let i of product){
+        itemsArr.Accessories.push(i);
+      }
+    }
+    if(product[0].productCategory === 'Books'){
+      itemsArr.Books = [];
+      for(let i of product){
+        itemsArr.Books.push(i);
+      }
+    }
+    if(product[0].productCategory === 'Clothes'){
+      itemsArr.Clothes = [];
+      for(let i of product){
+        itemsArr.Clothes.push(i);
+      }
+    }
+    if(product[0].productCategory === 'Furniture'){
+      itemsArr.Furniture = [];
+      for(let i of product){
+        itemsArr.Furniture.push(i);
+      }
+    }
+    if(product[0].productCategory === 'Shoes'){
+      itemsArr.Shoes = [];
+      for(let i of product){
+        itemsArr.Shoes.push(i);
+      }
+    }
+    console.log("itemsArr>>>", itemsArr);
+    let body = {
+      items: itemsArr,
+      user: token
+    };
+    return body;
+  }
+
   addToCart(item, index){
-    if(products[index].quantity >= 0){
-      products[index].quantity = products[index].quantity + 1;
-      this.setState({Items: products});
+    if(token){
+      if(products[index].quantity >= 0){
+        products[index].quantity = products[index].quantity + 1;
+        this.setState({Items: products});
+        Axios.post(Environment.environment.addToCart, this.bodyForCart(products))
+        .then(res => {
+          let data = res.data;
+          if(data.message === "failure"){
+            this.setState({
+              errorFlag: true,
+              title: "Failure",
+              message: "Please try again after sometime!"
+            })
+          }
+        })
+        .catch(err => {
+          this.setState({
+            errorFlag: true,
+            title: 'Failure',
+            message: 'Uh-Oh! Something went Wrong!'
+          })
+        })
+      }
+    }
+    else{
+      this.setState({
+        alertFlag: true,
+        title: "Failure",
+        message: "Kindly login if you are a existing user (or) Register if you are a new user"
+      })
     }
   }
 
@@ -101,11 +190,30 @@ class LandingPage extends React.Component{
     if(products[index].quantity > 0){
       products[index].quantity = products[index].quantity - 1;
       this.setState({Items: products});
+      // console.log(this.bodyForCart(products));
+      Axios.post(Environment.environment.addToCart, this.bodyForCart(products))
+      .then(res => {
+        let data = res.data;
+        if(data.message === "failure"){
+          this.setState({
+            errorFlag: true,
+            title: "Failure",
+            message: "Please try again after sometime!"
+          })
+        }
+      })
+      .catch(err => {
+        this.setState({
+          errorFlag: true,
+          title: 'Failure',
+          message: 'Uh-Oh! Something went Wrong!'
+        })
+      })
     }
   }
 
   render(){
-    const {admin, NavItems, Items, loggedin, loggedout, cartFlag} = this.state;
+    const {admin, NavItems, Items, loggedin, loggedout, cartFlag, alertFlag, errorFlag, title, message} = this.state;
     return(
       <div>
         <Header loggedIn={loggedin} loggedOut={loggedout} />
@@ -143,7 +251,7 @@ class LandingPage extends React.Component{
                       <div className={Styles.ButtonGroup} >
                         <div className="btn btn-group" >
                           <button className="btn btn-success" onClick={() => this.addToCart(item, index)} ><i className="fa fa-plus" aria-hidden="true"></i></button>
-                          <button className="btn btn-warn" disabled={true} >{item.quantity}</button>
+                          <button className="btn btn-warn bg-light" ><b>{item.quantity}</b></button>
                           <button className="btn btn-danger" onClick={() => this.removeFromCart(item, index)} ><i className="fa fa-minus" aria-hidden="true"></i></button>
                         </div>
                       </div>
@@ -157,6 +265,8 @@ class LandingPage extends React.Component{
             }
           </div>
         </div>
+        <Alert alertFlag={alertFlag} title={title} message={message} close={() => this.props.history.push('/login')} />
+        <Error errorFlag={errorFlag} title={title} message={message} close={() => this.setState({errorFlag: false})}/>
       </div>
     )
   }

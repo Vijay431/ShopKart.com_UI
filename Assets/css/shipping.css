@@ -1,26 +1,19 @@
-.Card{
-  width: 30%;
-  margin-left: auto;
-  margin-right: auto;
+.ShippingOuterDiv{
   margin-top: 5%;
 }
 
-.Card h3{
+.Header{
+  padding: 10px;
   text-align: center;
-  font-size: 24px;
-  background-color: #0275d8;
+  background-color: grey;
   color: white;
-  font-family: cursive;
+  margin-top: 3.5%;
+  margin-bottom: -4.5%;
+  font-weight: bold;
 }
 
-.Button{
-  margin-top: -15px;
-  margin-bottom: 5px;
-  width: 100%;
-}
-
-.Button button{
-  margin-left: 20%;
-  margin-right: 20%;
-  font-family: cursive;
+.Status{
+  float: right;
+  color: green;
+  font-weight: bold;
 }

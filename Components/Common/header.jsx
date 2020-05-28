@@ -7,11 +7,13 @@ const Header = (props) => {
   const history = useHistory();
   const [loggedIn, setloggedIn] = useState(true);
   const [loggedOut, setloggedOut] = useState();
+  const [shipping, setshipping] = useState();
 
   useEffect(() => {
     setloggedIn(props.loggedIn);
     setloggedOut(props.loggedOut);
-  }, [props.loggedin, props.loggedOut])
+    setshipping(props.shipping);
+  }, [props.loggedin, props.loggedOut, props.shipping])
 
   const toLogin = () => {
     history.push('/login');
@@ -23,6 +25,10 @@ const Header = (props) => {
 
   const toCart = () => {
     history.push('/cart');
+  }
+
+  const toShipping = () =>{
+    history.push('/shipping');
   }
 
   const toLogout = () => {
@@ -64,6 +70,13 @@ const Header = (props) => {
               </button>
             </div>
           </div> : null
+        }
+        {
+          shipping ? <div className={Styles.Button} >
+              <button type="button" className="btn btn-warning" onClick={toShipping} >
+                Shipping <i className="fa fa-truck fa-flip-horizontal" aria-hidden="true"></i>
+              </button>
+            </div> : null
         }
       </nav>
   )

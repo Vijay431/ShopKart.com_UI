@@ -6,19 +6,14 @@ export default {
       "fafa": "fa fa-plus-circle"
     },
     {
-      "name": "All",
-      "show": true,
-      "fafa": "fa fa-asterisk"
-    },
-    {
       "name": "Accessories",
       "show": true,
       "fafa": "fa fa-phone-square"
     },
     {
-      "name": "Furniture",
+      "name": "Books",
       "show": true,
-      "fafa": "fa fa-bed"
+      "fafa": "fa fa-book"
     },
     {
       "name": "Clothes",
@@ -26,14 +21,14 @@ export default {
       "fafa": "fa fa-user-circle-o"
     },
     {
+      "name": "Furniture",
+      "show": true,
+      "fafa": "fa fa-bed"
+    },
+    {
       "name": "Shoes",
       "show": true,
       "fafa": "fa fa-blind"
-    },
-    {
-      "name": "Books",
-      "show": true,
-      "fafa": "fa fa-book"
-    },
+    }
   ]
 }
