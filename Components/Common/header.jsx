@@ -26,7 +26,8 @@ const Header = (props) => {
   }
 
   const toLogout = () => {
-    history.push({state: true});
+    window.sessionStorage.removeItem('Auth-token');
+    window.sessionStorage.removeItem('admin');
     window.location.reload(true);
   }
 

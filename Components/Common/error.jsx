@@ -11,7 +11,7 @@ const Error = (props) => {
         <div className={Styles.Modal} >
           <div className={ props.title === 'Success' ? Styles.Success : Styles.Failure} >
             {props.title}
-            <span className={Styles.Close} onClick={() => props.close()} >&times;</span>
+            <span className={Styles.Close} onClick={props.close} >&times;</span>
           </div>
           <hr/>
           <div className={Styles.Body} >
@@ -19,7 +19,7 @@ const Error = (props) => {
           </div>
           <hr/>
           <div className={Styles.ActionButton} >
-            <button className="btn btn-info" onClick={() => props.close()} >Close</button>
+            <button className="btn btn-info" onClick={props.close} >Close</button>
           </div>
         </div>
       </div> : null

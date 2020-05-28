@@ -11,25 +11,33 @@ import ProductForm from './Components/Others/productForm.jsx';
 import NotFound from './Components/Common/notFound.jsx';
 
 class App extends Component{
-   constructor(props){
-      super(props);
-   }
+ constructor(props){
+    super(props);
+    this.state = {
+      admin: ''
+    }
+ }
 
-   render(){
-      return(
-         <div>
-            <Switch>
-               <Route path="/" exact={true} component={LandingPage} />
-               <Route path="/login" component={Login} />
-               <Route path="/register" component={Register} />
-               <Route path="/cart" component={Cart} />
-               <Route path="/shipping" component={Shipping} />
-               <Route path="/productform" component={ProductForm} />
-               <Route path="**" component={NotFound} />
-            </Switch>
-         </div>
-      );
-   }
+ componentDidMount(){
+   this.setState({admin: window.sessionStorage.getItem('admin')});
+ }
+
+ render(){
+    const {admin} = this.state;
+  return(
+   <div>
+    <Switch>
+     <Route path="/" exact={true} component={LandingPage} />
+     <Route path="/login" component={Login} />
+     <Route path="/register" component={Register} />
+     <Route path="/cart" component={Cart} />
+     <Route path="/shipping" component={Shipping} />
+     { admin === 'Y' ? <Route path="/productform" component={ProductForm} /> : null }
+     <Route path="**" component={NotFound} />
+    </Switch>
+   </div>
+  );
+ }
 }
 
 export default App;

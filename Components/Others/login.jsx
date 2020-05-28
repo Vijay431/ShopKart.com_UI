@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Axios from 'axios';
 
 import Styles from '../../Assets/css/login.css';
 import Header from '../Common/header.jsx';
 import Error from '../Common/error.jsx';
+import Alert from '../Common/alert.jsx';
 import Environment from '../Common/environment.jsx';
 
 class Login extends React.Component{
@@ -13,6 +15,7 @@ class Login extends React.Component{
         username: '',
         password: '',
         errorFlag: false,
+        alertFlag: false,
         title: '',
         message: ''
     }
@@ -26,10 +29,35 @@ class Login extends React.Component{
   loginComponent(){
     const {username, password, title, message} = this.state;
     if(username !== "" && password !== ""){
-      this.props.history.push({
-        pathname: '/',
-        state: false
-      });
+      Axios.get(Environment.environment.login + "?username=" + username + "&password=" + password)
+      .then((res) => {
+        let data = res.data;
+        if(data.message === 'success'){
+          if(data.data[0].type === 'admin'){
+            window.sessionStorage.setItem('admin', 'Y');
+          }
+          else{
+            window.sessionStorage.setItem('admin', 'N');
+          }
+          let token = window.btoa(username + ':' + password);
+          window.sessionStorage.setItem('Auth-token', token);
+          this.props.history.push('/');
+        }
+        else{
+          this.setState({
+            alertFlag: true,
+            title: "Failure",
+            message: "You're not a registered user. Redirecting to Register Page"
+          })
+        }
+      })
+      .catch((err) => {
+        this.setState({
+          errorFlag: true,
+          title: "Failure",
+          message: "Uh-Oh! Something went Wrong!"
+        })
+      })
     }
     else{
       this.setState({
@@ -41,7 +69,7 @@ class Login extends React.Component{
   }
 
   render(){
-    const {username, password, errorFlag, title, message} = this.state;
+    const {username, password, errorFlag, alertFlag, title, message} = this.state;
     return(
       <div>
         <Header loggedIn={false} loggedOut={false} />
@@ -78,6 +106,7 @@ class Login extends React.Component{
         </div>
       </div>
       <Error errorFlag={errorFlag} title={title} message={message} close={() => this.setState({errorFlag: false})} />
+      <Alert alertFlag={alertFlag} title={title} message={message} close={() => this.props.history.push('/register')} />
       </div>
     )
   }

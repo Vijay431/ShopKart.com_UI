@@ -1,10 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Axios from 'axios';
 
 import Styles from '../../Assets/css/productForm.css';
 import Header from '../Common/header.jsx';
 import Items from '../../Assets/JSON/navProducts.js';
+import Environment from '../Common/environment.jsx';
+import Alert from '../Common/alert.jsx';
+import Error from '../Common/error.jsx';
 const NavItems = Items.navitems;
+var formdata = new FormData();
+var item = {};
+var imageBuffer = {};
 
 class ProductForm extends React.Component{
   constructor(props){
@@ -15,37 +22,51 @@ class ProductForm extends React.Component{
       productID: Date.now(),
       productDescription: '',
       productCategory: '',
-      productImage: '',
       productPrice: '',
       whichButton: true,
-      imageButton: true
+      imageButton: true,
+      isImageAlreadyAttached: true,
+      popupTitle: '',
+      message: '',
+      alertFlag: false,
+      errorFlag: false
     }
     this.addProduct = this.addProduct.bind(this);
     this.updateProduct = this.updateProduct.bind(this);
+    this.base64String = this.base64String.bind(this);
   }
 
   componentDidMount(){
-    let item = this.props.location.state;
+    item = this.props.location.state;
     if(item !== undefined && item !== null){
       this.setState({
         title: 'Update Form',
-        productName: item.name,
-        productID: item.id,
-        productDescription: item.description,
-        productCategory: item.category,
-        productPrice: item.price,
-        productImage: item.image,
+        productName: item.productName,
+        productID: item.productID,
+        productDescription: item.productDescription,
+        productCategory: item.productCategory,
+        productPrice: 0, //item.productPrice
         whichButton: false,
         imageButton: false
       })
+      imageBuffer = item.productImage;
     }
+  }
+
+  base64String(){
+    let data = "";
+    let imageBufferArray = new Uint8Array(imageBuffer.imgdata.data);
+    let stringBuffer = String.fromCharCode.apply(null, imageBufferArray);
+    let base64String = btoa(stringBuffer);
+    let imageurl = `data:${imageBuffer.contentType};base64,` + base64String;
+    return imageurl;
   }
 
   fileValidator(event){
     let file = event.target.files[0];
-    let value = event.target.value;
+    this.setState({isImageAlreadyAttached: false});
     if(file !== null && file !== "" && (file.type === 'image/jpeg' || file.type === 'image/png')){
-      this.setState({productImage: value});
+      formdata.append('productImage', file);
       return true;
     }
     else{
@@ -58,21 +79,103 @@ class ProductForm extends React.Component{
   }
 
   addProduct(){
-    const {productName, productID, productDescription, productCategory, productImage, productPrice} = this.state;
-    if(productName !== "" && productID !== "" && productDescription !== "" && productCategory !== "" && productPrice !== ""  || productImage!= "" ){
-      console.log("added");
+    const {productName, productID, productDescription, productCategory, productPrice} = this.state;
+    if(productName !== "" && productID !== "" && productDescription !== "" && productCategory !== "" && productPrice !== ""){
+      formdata.append('productName', productName);
+      formdata.append('productID', productID);
+      formdata.append('productDescription', productDescription);
+      formdata.append('productCategory', productCategory);
+      formdata.append('productPrice', productPrice);
+      formdata.append('quantity', 0);
+
+      Axios.post(Environment.environment.addProducts, formdata)
+      .then((res) => {
+        let data = res.data;
+        if(data.message === "success"){
+          formdata = {};
+          this.setState({
+            alertFlag: true,
+            popupTitle: 'Success',
+            message: 'Product added successfully!',
+            productName: '',
+            productID: Date.now(),
+            productCategory: '',
+            productDescription: '',
+            productPrice: ''
+          })
+        }
+        else{
+          this.setState({
+            alertFlag: true,
+            popupTitle: 'Failure',
+            message: 'Try again! After sometime'
+          })
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({
+          errorFlag: true,
+          popupTitle: 'Failure',
+          message: 'Uh-Oh! Something went Wrong!'
+        })
+      })
     }
     else{
-      //alert Component
+      this.setState({
+        errorFlag: true,
+        popupTitle: 'Failure',
+        message: 'All fields are mandatory. Kindly fill the empty fields'
+      })
     }
   }
 
   updateProduct(){
+    const {productName, productID, productDescription, productCategory, productPrice, isImageAlreadyAttached} = this.state;
+    if(productName !== "" && productID !== "" && productDescription !== "" && productCategory !== "" && productPrice !== ""){
+      formdata.append('objectid', item._id);
+      formdata.append('productName', productName);
+      formdata.append('productID', productID);
+      formdata.append('productDescription', productDescription);
+      formdata.append('productCategory', productCategory);
+      formdata.append('productPrice', productPrice);
+      formdata.append('quantity', 0);
 
+      Axios.post(Environment.environment.updateProducts, formdata)
+      .then(res => {
+        let data = res.data;
+        if(data.message === "success"){
+          this.setState({
+            alertFlag: true,
+            popupTitle: 'Success',
+            message: 'Product successfully updated!'
+          })
+        }
+        else{
+          this.setState({
+            errorFlag: false,
+            popupTitle: 'Failure',
+            message: 'Try again! After sometime'
+          })
+        }
+      })
+      .catch(err => {
+        this.setState({
+          errorFlag: false,
+          popupTitle: 'Failure',
+          message: 'Uh-Oh! Something went Wrong!'
+        })
+      })
+    }
+  }
+
+  close(){
+    this.props.history.push('/');
+    window.location.reload(true);
   }
 
   render(){
-    const {title, productName, productID, productDescription, productCategory, productImage, productPrice} = this.state;
+    const {title, productName, productID, productDescription, productCategory, productPrice, popupTitle, alertFlag, errorFlag, message} = this.state;
     return(
       <div>
         <Header loggedIn={false} loggedOut={false} />
@@ -131,29 +234,33 @@ class ProductForm extends React.Component{
                       <span className="input-group-text"><i className="fa fa-file-image-o" aria-hidden="true"></i></span>
                     </div>
                     <div className="custom-file">
-                      <input type="file" className="custom-file-input" id="productImage" value={productImage} onChange={() => this.fileValidator(event)} />
+                      <input type="file" className="custom-file-input" id="productImage" onChange={() => this.fileValidator(event)} />
                       <label className="custom-file-label" htmlFor="productImage">Choose file</label>
                     </div>
-                  </div> :<div className={Styles.Image} >
+                  </div> : <div className={Styles.Image} >
                     <label htmlFor="productImage" >Product Image</label>
-                    <i className="fa fa-times" title="remove image" onClick={() => this.setState({imageButton: true, productImage: ''})}  aria-hidden="true"></i>
-                    <img src={productImage} id="productImage" height="200" width="250" />
+                    <i className="fa fa-times" title="remove image" onClick={() => this.setState({imageButton: true})}  aria-hidden="true"></i>
+                    <img src={this.base64String()} id="productImage" height="200" width="250" />
                   </div>
                 }
               </div>
             </div>
             <div className="btn btn-group" role="toolbar">
-              { this.state.whichButton ? <div className={Styles.Button} >
-                <button type="submit" className="btn btn-success" onClick={this.addProduct} >Add</button>
-              </div> : <div className={Styles.Button} >
-                <button type="submit" className="btn btn-success" onClick={this.updateProduct} >Update</button>
-              </div> }
+              {
+                this.state.whichButton ? <div className={Styles.Button} >
+                  <button type="submit" className="btn btn-success" onClick={this.addProduct} >Add</button>
+                </div> : <div className={Styles.Button} >
+                  <button type="submit" className="btn btn-success" onClick={this.updateProduct} >Update</button>
+                </div>
+              }
               <div className={Styles.Button} >
                 <Link to="/"><button type="button" className="btn btn-danger" >Cancel</button></Link>
               </div>
             </div>
           </div>
         </div>
+        <Alert alertFlag={alertFlag} title={popupTitle} message={message} close={() => this.close() } />
+        <Error errorFlag={errorFlag} title={popupTitle} message={message} close={() => this.setState({errorFlag: false}) } />
       </div>
     )
   }

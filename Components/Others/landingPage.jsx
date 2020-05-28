@@ -1,33 +1,43 @@
 import React from 'react';
+import Axios from 'axios';
 
 import Styles from '../../Assets/css/landingPage.css';
 
 import Header from '../Common/header.jsx';
-import JSONproducts from '../../Assets/JSON/products.js';
-const products = JSONproducts.products;
 import Items from '../../Assets/JSON/navProducts.js';
 const NavItems = Items.navitems;
 import ProductForm from './productForm.jsx';
 import Cart from './cart.jsx';
+import Environment from '../Common/environment.jsx';
+import Alert from '../Common/alert.jsx';
+import Error from '../Common/error.jsx';
+
+var products = [];
 
 class LandingPage extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-      user: 'admin',
+      admin: window.sessionStorage.getItem('admin'),
       NavItems: Items.navitems,
-      Items: products,
+      Items: [],
       loggedin: true,
-      loggedout: false
+      loggedout: false,
+      title: '',
+      message: '',
+      alertFlag: false,
+      errorFlag: false
     }
+    this.base64String = this.base64String.bind(this);
   }
 
   componentDidMount(){
-    let state = this.props.location.state;
-    if(state !== undefined && state !== null){
-      this.setState({loggedin: this.props.location.state, loggedout: !this.props.location.state});
+    this.getProducts('All');
+    let token = window.sessionStorage.getItem('Auth-token');
+    if(token){
+      this.setState({loggedin: false, loggedout: true});
     }
-    if(this.state.user === 'admin'){
+    if(this.state.admin === 'Y'){
       Items.navitems[0].show = true;
       this.setState({NavItems: Items.navitems})
     }
@@ -35,6 +45,33 @@ class LandingPage extends React.Component{
       Items.navitems[0].show = false;
       this.setState({NavItems: Items.navitems})
     }
+  }
+
+  getProducts(category){
+    Axios.get(Environment.environment.getProducts + "?category=" + category)
+    .then((res) => {
+      let data = res.data;
+      if(data.message === 'success'){
+        products = data.data;
+        this.setState({Items: data.data});
+      }
+      else{
+        this.setState({
+          alertFlag: true,
+          title: 'Failure',
+          message: 'Try again! After sometime'
+        })
+      }
+    })
+  }
+
+  base64String(imageBuffer){
+    let data = "";
+    let imageBufferArray = new Uint8Array(imageBuffer.imgdata.data);
+    let stringBuffer = String.fromCharCode.apply(null, imageBufferArray);
+    let base64String = btoa(stringBuffer);
+    let imageurl = `data:${imageBuffer.contentType};base64,` + base64String;
+    return imageurl
   }
 
   updateForm(item){
@@ -45,9 +82,11 @@ class LandingPage extends React.Component{
   }
 
   itemDetail(name){
-    console.log("clicked " + name);
     if(name === 'Add'){
       this.props.history.push('/productform');
+    }
+    else{
+      this.getProducts(name);
     }
   }
 
@@ -55,7 +94,6 @@ class LandingPage extends React.Component{
     if(products[index].quantity >= 0){
       products[index].quantity = products[index].quantity + 1;
       this.setState({Items: products});
-      productArr = this.state.Items;
     }
   }
 
@@ -63,12 +101,11 @@ class LandingPage extends React.Component{
     if(products[index].quantity > 0){
       products[index].quantity = products[index].quantity - 1;
       this.setState({Items: products});
-      productArr = this.state.Items;
     }
   }
 
   render(){
-    const {user, NavItems, Items, loggedin, loggedout, cartFlag} = this.state;
+    const {admin, NavItems, Items, loggedin, loggedout, cartFlag} = this.state;
     return(
       <div>
         <Header loggedIn={loggedin} loggedOut={loggedout} />
@@ -90,14 +127,14 @@ class LandingPage extends React.Component{
             {
               Items.map((item, index) => {
                 return <div key={index} className="col-sm-3" >
-                  <div className="card" >
-                    <img className="card-img-top" height="200" width="150" src={item.image} alt={item.name}/>
+                  <div className="card h-100" >
+                    <img className="card-img-top" height="250" width="180" src={this.base64String(item.productImage)} alt={item.productName}/>
                     <div className="card-body">
-                      <h5 className="card-title">{item.name}</h5>
-                      <p className="card-text"><b>Description:</b> {item.description}</p>
-                      <p className="card-text" ><b>Price:</b> {item.price}</p>
+                      <h5 className="card-title">{item.productName}</h5>
+                      <p className="card-text"><b>Description:</b> {item.productDescription.substring(0, 120) + "..."} </p>
+                      <p className="card-text" ><b>Price:</b> {item.productPrice}</p>
                       {
-                        user === 'admin' ? <div className={Styles.ActionButton} >
+                        admin === 'Y' ? <div className={Styles.ActionButton} >
                           <button className="btn btn-warning" onClick={() => this.updateForm(item)} >
                             <i className="fa fa-pencil" aria-hidden="true"></i> Update
                           </button>
@@ -112,7 +149,7 @@ class LandingPage extends React.Component{
                       </div>
                     </div>
                     <div className="card-footer">
-                      <small className="text-muted">{item.id}</small>
+                      <small className="text-muted">{item.productID}</small>
                     </div>
                   </div>
                 </div>

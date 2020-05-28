@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Axios from 'axios';
 
 import Styles from '../../Assets/css/register.css';
 import Header from '../Common/header.jsx';
 import Error from '../Common/error.jsx';
 import Alert from '../Common/alert.jsx';
+import Environment from '../Common/environment.jsx';
 
 class Register extends React.Component{
   constructor(props){
@@ -29,10 +31,35 @@ class Register extends React.Component{
     const {username, password, repassword, errorFlag, alertFlag, title, message} = this.state;
     if(username !== "" && password !== "" && repassword !== ""){
       if(password === repassword){
-        this.setState({
-          alertFlag: true,
-          title: "Success",
-          message: "Redirecting to Login Page"
+        let body = {
+          username: username,
+          password: password,
+          type: "user"
+        }
+        Axios.post(Environment.environment.register, body)
+        .then((res) => {
+          let data = res.data;
+          if(res.status == 200 && res.data !== undefined && data.message === "success"){
+            this.setState({
+              alertFlag: true,
+              title: "Success",
+              message: "Redirecting to Login Page. Kindly login with Registered credentials"
+            })
+          }
+          else{
+            this.setState({
+              errorFlag: true,
+              title: "Failure",
+              message: "Try again! After sometime"
+            })
+          }
+        })
+        .catch((err) => {
+          this.setState({
+            errorFlag: true,
+            title: "Failure",
+            message: "Uh-Oh! Something went Wrong!"
+          })
         })
       }
       else{
