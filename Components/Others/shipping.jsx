@@ -34,7 +34,6 @@ class Shipping extends React.Component{
       let data = res.data;
       if(data.message === "success"){
         this.setState({indexes: data.data});
-        console.log(data.data);
       }
       else{
         this.setState({

@@ -144,7 +144,6 @@ class LandingPage extends React.Component{
         itemsArr.Shoes.push(i);
       }
     }
-    console.log("itemsArr>>>", itemsArr);
     let body = {
       items: itemsArr,
       user: token
@@ -190,7 +189,6 @@ class LandingPage extends React.Component{
     if(products[index].quantity > 0){
       products[index].quantity = products[index].quantity - 1;
       this.setState({Items: products});
-      // console.log(this.bodyForCart(products));
       Axios.post(Environment.environment.addToCart, this.bodyForCart(products))
       .then(res => {
         let data = res.data;
