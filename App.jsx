@@ -15,25 +15,27 @@ class App extends Component{
  constructor(props){
     super(props);
     this.state = {
-      admin: ''
+      admin: '',
+      isLoggedIn: ''
     }
  }
 
  componentDidMount(){
    this.setState({admin: window.sessionStorage.getItem('admin')});
+   this.setState({isLoggedIn: window.sessionStorage.getItem('Auth-token')});
  }
 
  render(){
-    const {admin} = this.state;
+    const {admin, isLoggedIn} = this.state;
   return(
    <div>
     <Switch>
      <Route path="/" exact={true} component={LandingPage} />
      <Route path="/login" component={Login} />
      <Route path="/register" component={Register} />
-     <Route path="/cart" component={Cart} />
-     <Route path="/shipping" component={Shipping} />
-     <Route path="/checkoutform" component={CheckoutForm} />
+     { isLoggedIn ? <Route path="/cart" component={Cart} /> : null }
+     { isLoggedIn ? <Route path="/shipping" component={Shipping} /> : null }
+     { isLoggedIn ? <Route path="/checkoutform" component={CheckoutForm} /> : null }
      { admin === 'Y' ? <Route path="/productform" component={ProductForm} /> : null }
      <Route path="**" component={NotFound} />
     </Switch>

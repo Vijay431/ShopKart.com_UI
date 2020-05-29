@@ -234,7 +234,7 @@ class LandingPage extends React.Component{
               Items.map((item, index) => {
                 return <div key={index} className="col-sm-3" >
                   <div className="card h-100" >
-                    <img className="card-img-top" height="250" width="180" src={this.base64String(item.productImage)} alt={item.productName}/>
+                    <img className="card-img-top" height="200" width="150" src={this.base64String(item.productImage)} alt={item.productName}/>
                     <div className="card-body">
                       <h5 className="card-title">{item.productName}</h5>
                       <p className="card-text"><b>Description:</b> {item.productDescription.substring(0, 120) + "..."} </p>
